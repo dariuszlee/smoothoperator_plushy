@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 
 @Data
 @Entity
-public class Parameters {
+public class Parameter {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long Id;

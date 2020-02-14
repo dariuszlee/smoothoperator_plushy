@@ -12,25 +12,14 @@ import javax.persistence.GenerationType;
 @Entity
 public class Machine {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long Id;
     private String key;
     private String name;
 
-    public Machine(Long id, String key, String name) {
-        Id = id;
-        this.key = key;
-        this.name = name;
-    }
-
     public Machine(){}
 
-    public Long getId() {
-        return Id;
-    }
-
-    public void setId(Long id) {
-        Id = id;
+    public Machine(String key, String name) {
+        this.key = key;
+        this.name = name;
     }
 
     public String getKey() {
@@ -48,4 +37,5 @@ public class Machine {
     public void setName(String name) {
         this.name = name;
     }
+
 }

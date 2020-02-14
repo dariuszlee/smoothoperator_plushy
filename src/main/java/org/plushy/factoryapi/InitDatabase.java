@@ -1,6 +1,7 @@
 package org.plushy.factoryapi;
 
 import org.plushy.factoryapi.models.Machine;
+import org.plushy.factoryapi.models.Parameter;
 import org.plushy.factoryapi.repositories.MachineRepository;
 import org.plushy.factoryapi.repositories.ParameterRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -26,7 +27,7 @@ class InitDatabase {
             String machineFileName = "machines.csv";
             loadMachines(machineRepository, machineFileName);
             String parametersFileName = "parameters.csv";
-            loadParameters(machineRepository, machineFileName);
+            loadParameters(parameterRepository, parametersFileName);
         };
     }
 
@@ -47,7 +48,7 @@ class InitDatabase {
         }
     };
 
-    void loadMachines(ParameterRepository parameterRepository, String fileName){
+    void loadParameters(ParameterRepository parameterRepository, String fileName){
         try {
             File parameterDbFile = new ClassPathResource(fileName).getFile(); 
             CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
@@ -56,8 +57,8 @@ class InitDatabase {
                 mapper.readerFor(Parameter.class).with(bootstrapSchema).readValues(parameterDbFile);
             // for( readValues )
             while(readValues.hasNext()){
-                Machine machine = readValues.next();
-                log.info("Preloading: " + parameterRepository.save(machine));
+                Parameter parameter = readValues.next();
+                log.info("Preloading: " + parameterRepository.save(parameter));
             }
         } catch (Exception e) {
             log.error("Error occurred while loading object list from file: " + fileName + e.toString());
