@@ -13,8 +13,13 @@ import javax.persistence.GenerationType;
 
 @Data
 @Entity
+@IdClass(ParameterEventId.class)
 public class ParameterEvent {
-    @EmbeddedId ParameterEventId eventId;
+    @Id
+    String key;
+    @Id
+    String machineKey;
+    // ParameterEventId eventId;
     private LocalDateTime dateTime;
     private String value;
 }

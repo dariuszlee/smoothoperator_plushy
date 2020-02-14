@@ -14,7 +14,7 @@ import org.plushy.factoryapi.repositories.MachineRepository;
 import org.plushy.factoryapi.repositories.ParameterRepository;
 
 @RestController
-class MachineController {
+public class MachineController {
     MachineRepository machineRepository;
     ParameterRepository parameterRepository;
     MachineController(MachineRepository machineRepository, ParameterRepository parameterRepository) {
@@ -28,17 +28,17 @@ class MachineController {
         return machines; 
     }
 
+    @GetMapping("/machinesAggregated")
+    List<Machine> allAggregated() {
+        List<Machine> machines = machineRepository.findAll();
+        return machines; 
+    }
+
+
     @GetMapping("/machines/{machineKey}")
     Machine getMachine(@PathVariable String machineKey) {
         Machine machine = machineRepository.findById(machineKey).orElseThrow(() -> new MachineNotFoundException(machineKey));
 
         return machine; 
-    }
-
-    @GetMapping("/machines/{machineKey}/parameter")
-    List<Parameter> getParameter(@PathVariable String machineKey) {
-        Machine machine = this.getMachine(machineKey);
-        List<Parameter> parameters = parameterRepository.findAll();
-        return parameters; 
     }
 }

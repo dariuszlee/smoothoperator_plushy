@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvParser;
 
 import java.io.File;
 
@@ -53,6 +54,8 @@ class InitDatabase {
             File parameterDbFile = new ClassPathResource(fileName).getFile(); 
             CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
             CsvMapper mapper = new CsvMapper();
+            // mapper.enable(CsvParser.Feature.IGNORE_TRAILING_UNMAPPABLE);
+
             MappingIterator<Parameter> readValues =
                 mapper.readerFor(Parameter.class).with(bootstrapSchema).readValues(parameterDbFile);
             // for( readValues )

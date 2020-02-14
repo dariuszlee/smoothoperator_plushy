@@ -1,9 +1,11 @@
 package org.plushy.factoryapi.models;
 
+import java.io.Serializable;
+
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class ParameterEventId {
-    private String parameterKey;
+public class ParameterEventId implements Serializable {
+    private String key;
     private String machineKey;
 }
