@@ -1,7 +1,9 @@
 package org.plushy.factoryapi.models;
 
+import java.time.LocalDateTime;
+
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 
@@ -11,11 +13,8 @@ import javax.persistence.GenerationType;
 
 @Data
 @Entity
-public class Parameter {
-    @Id
-    private String key;
-    private String machineKey;
-    private String name;
-    private String type;
-    private String unit;
+public class ParameterEvent {
+    @EmbeddedId ParameterEventId eventId;
+    private LocalDateTime dateTime;
+    private String value;
 }

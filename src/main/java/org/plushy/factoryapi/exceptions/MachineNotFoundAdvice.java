@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class MachineNotFoundAdvice {
+class MachineNotFoundAdvice {
 
 	@ResponseBody
 	@ExceptionHandler(MachineNotFoundException.class)

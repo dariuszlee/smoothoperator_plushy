@@ -1,8 +1,11 @@
 package org.plushy.factoryapi.models;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import lombok.Data;
 
@@ -14,6 +17,8 @@ public class Machine {
     @Id
     private String key;
     private String name;
+    @OneToMany(mappedBy = "machineKey")
+    private List<Parameter> parameters;
 
     public Machine(){}
 
