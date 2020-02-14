@@ -1,6 +1,7 @@
 package org.plushy.factoryapi;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalToIgnoringWhiteSpace;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -28,10 +29,15 @@ public class MachineControllerTests {
 	@MockBean
 	private MachineRepository machineRepo;
 
+	@MockBean
+	private ParameterRepository parameterRepo;
+
 	@Test
-	public void greetingShouldReturnMessageFromService() throws Exception {
+	public void testEmptyAllHttp() throws Exception {
 		when(machineRepo.findAll()).thenReturn(new ArrayList<Machine>());
-		this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
-				.andExpect(content().string(containsString("Hello, Mock")));
+		this.mockMvc.perform(get("/machines"))
+            .andDo(print())
+            .andExpect(status().isOk())
+		    .andExpect(content().string(equalToIgnoringWhiteSpace("[]")));
 	}
 }
