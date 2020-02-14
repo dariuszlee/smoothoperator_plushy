@@ -16,7 +16,6 @@ class MachineController {
     @GetMapping("/machines")
     List<Machine> all() {
         List<Machine> machines = new ArrayList<Machine>();
-        machines.add(new Machine("Asdf"));
         return machines; 
     }
 }

@@ -1,8 +1,8 @@
-package org.plush.factoryapi.repositories;
+package org.plushy.factoryapi.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.plushy.factoryapi.models.Machine;
 
-interface EmployeeRepository extends JpaRepository<Machine, Long> {
+public interface MachineRepository extends JpaRepository<Machine, Long> {
 
 }
