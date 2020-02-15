@@ -31,7 +31,7 @@ public class MachineControllerUnitTests {
 	@Autowired
 	private MachineRepository machineRepo;
 
-	@MockBean
+	@Autowired
 	private ParameterRepository parameterRepo;
 
 	@Test

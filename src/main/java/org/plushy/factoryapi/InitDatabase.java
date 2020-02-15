@@ -21,18 +21,22 @@ import com.fasterxml.jackson.databind.MappingIterator;
 
 @Configuration
 @Slf4j
-class InitDatabase {
+public class InitDatabase {
 	@Bean
 	CommandLineRunner preloadDatabase(MachineRepository machineRepository, ParameterRepository parameterRepository) {
 		return args -> {
-            String machineFileName = "machines.csv";
-            loadMachines(machineRepository, machineFileName);
-            String parametersFileName = "parameters.csv";
-            loadParameters(parameterRepository, parametersFileName);
+            loadDatabase(machineRepository, parameterRepository);
         };
     }
+    
+    public static void loadDatabase(MachineRepository machineRepository, ParameterRepository parameterRepository) {
+        String machineFileName = "machines.csv";
+        loadMachines(machineRepository, machineFileName);
+        String parametersFileName = "parameters.csv";
+        loadParameters(parameterRepository, parametersFileName);
+    }
 
-    void loadMachines(MachineRepository machineRepository, String fileName){
+    public static void loadMachines(MachineRepository machineRepository, String fileName){
         try {
             File machineDbFile = new ClassPathResource(fileName).getFile(); 
             CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
@@ -49,7 +53,7 @@ class InitDatabase {
         }
     };
 
-    void loadParameters(ParameterRepository parameterRepository, String fileName){
+    public static void loadParameters(ParameterRepository parameterRepository, String fileName){
         try {
             File parameterDbFile = new ClassPathResource(fileName).getFile(); 
             CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
@@ -61,6 +65,7 @@ class InitDatabase {
             // for( readValues )
             while(readValues.hasNext()){
                 Parameter parameter = readValues.next();
+                System.out.println(parameter);
                 log.info("Preloading: " + parameterRepository.save(parameter));
             }
         } catch (Exception e) {
