@@ -39,6 +39,10 @@ public class MachineControllerUnitTests {
 		// when(machineRepo.findAll()).thenReturn(new ArrayList<Machine>());
 		List<Machine> res = this.machineController.all();
         System.out.println(res);
-        Assert.isTrue(res.isEmpty());
+        Assert.isTrue(res.size() == 3);
 	}
+
+    @Test void testInvalidInsert() {
+        // this.machineController.add();
+    }
 }
