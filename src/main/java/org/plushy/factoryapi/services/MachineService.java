@@ -57,28 +57,6 @@ public class MachineService {
         return allParametersAggregated;
     }
 
-    private ParameterAggregation getParameterAggregation(final Parameter param, final List<ParameterEvent> events) {
-        final double min = Double.valueOf(events.get(0).getValue());
-        final double max = Double.valueOf(events.get(events.size() - 1).getValue());
-        double median = 0;
-        final int middleEvent = (int) events.size() / 2;
-        if (events.size() % 2 == 1) {
-            median = Double.valueOf(events.get(middleEvent).getValue());
-        } else {
-            median = (Double.valueOf(events.get(middleEvent).getValue())
-                    + Double.valueOf(events.get(middleEvent - 1).getValue())) / 2;
-        }
-
-        double average = 0;
-        for (final ParameterEvent event : events) {
-            average += Double.valueOf(event.getValue());
-        }
-        average /= events.size();
-
-        final ParameterAggregation result = new ParameterAggregation(param, min, max, median, average);
-        return result;
-    }
-
     public void saveParameterEvent(final ParameterUpdateEvent event) {
         final String machineKey = event.getMachineKey();
         try {
@@ -109,5 +87,27 @@ public class MachineService {
         final Map<String, Parameter> parameters = new HashMap<String, Parameter>();
         parameterRepository.findAllByMachineKey(machineKey).forEach(x -> parameters.put(x.getParameterKey(), x));
         return parameters;
+    }
+
+    private ParameterAggregation getParameterAggregation(final Parameter param, final List<ParameterEvent> events) {
+        final double min = Double.valueOf(events.get(0).getValue());
+        final double max = Double.valueOf(events.get(events.size() - 1).getValue());
+        double median = 0;
+        final int middleEvent = (int) events.size() / 2;
+        if (events.size() % 2 == 1) {
+            median = Double.valueOf(events.get(middleEvent).getValue());
+        } else {
+            median = (Double.valueOf(events.get(middleEvent).getValue())
+                    + Double.valueOf(events.get(middleEvent - 1).getValue())) / 2;
+        }
+
+        double average = 0;
+        for (final ParameterEvent event : events) {
+            average += Double.valueOf(event.getValue());
+        }
+        average /= events.size();
+
+        final ParameterAggregation result = new ParameterAggregation(param, min, max, median, average);
+        return result;
     }
 }

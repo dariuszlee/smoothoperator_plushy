@@ -55,4 +55,10 @@ public class ParameterAggregation {
     public void setAverage(final double average) {
         this.average = average;
     }
+
+    @Override
+    public String toString() {
+        return "ParameterAggregation [average=" + average + ", max=" + max + ", median=" + median + ", min=" + min
+                + ", parameter=" + parameter + "]";
+    }
 }

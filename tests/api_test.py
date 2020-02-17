@@ -9,9 +9,16 @@ parameter_url = 'http://localhost:8081/parameters'
 get_latest_url = 'http://localhost:8081/parameters/latest'
 get_aggregated_url = 'http://localhost:8081/parameters/aggregated/{minutes}'
 
-def create_parameter_event(machine, parameters):
-    paramEvent = {'machineKey': machine, 'parameters': {k:v for k,v in parameters}}
-    return json.dumps(paramEvent)
+def test_emptys():
+    r = requests.get(get_latest_url)
+    data = r.json()
+    assert r.status_code == 200
+    assert len(data) == 0
+
+    req = requests.get(get_aggregated_url.format(minutes=5))
+    data = req.json()
+    assert req.status_code == 200
+    assert len(data) == 0
 
 def test_post_malformed():
     parameters = {"heat": 3.0, "moisture": 20.0}
@@ -21,6 +28,26 @@ def test_post_malformed():
     parameters = {"machineKey": {"asdf": "asdf"}, "parameters": {}}
     r = requests.post(parameter_url, json=parameters)
     assert r.status_code == 400
+
+def test_malformed_with_valids():
+    parameters = {"heat": 3}
+    paramEvent = {"machineKey": "flufferizer", "parameters": parameters}
+    r = requests.post(parameter_url, json=paramEvent)
+    assert r.status_code == 201
+
+    parameters = {"machineKey": "flufferizer", "parameters": {"heat": "heat2"}}
+    r = requests.post(parameter_url, json=parameters)
+    assert r.status_code == 400
+
+    parameters = {"machineKey": "flufferizer", "parameters": {"moisture": "moist1"}}
+    r = requests.post(parameter_url, json=parameters)
+    assert r.status_code == 400
+
+    r = requests.get(get_latest_url)
+    data = r.json()
+    assert r.status_code == 200
+    assert float(data[0]['value']) == 3.0
+    
 
 def test_1():
     machineKey = "flufferizer"
@@ -123,16 +150,22 @@ def delete_all_request():
 
 
 def main():
-    delete_all_request()
-    print("Test some Malformed Requests...")
+    print("Test some Empty Requests and Malformed Requests...")
     print("")
+    delete_all_request()
+    test_emptys()
     test_post_malformed()
+    print("Test Malformed Mixed with Normal Reuqests")
+    print("")
+    delete_all_request()
+    test_malformed_with_valids()
     print("Test 1: Starting")
     print("")
-    test_1();
     delete_all_request()
+    test_1();
     print("Test 2: Starting")
     print("")
+    delete_all_request()
     test_2_aggregation_in_time_window();
 
 if __name__ == "__main__":
