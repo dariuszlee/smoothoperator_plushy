@@ -8,7 +8,7 @@ import time
 parameter_url = 'http://localhost:8081/parameters'
 get_latest_url = 'http://localhost:8081/parameters/latest'
 get_aggregated_url = 'http://localhost:8081/parameters/aggregated/{minutes}'
-events_url = 'http://localhost:8081/parameters/events'
+events_url = 'http://localhost:8081/events'
 
 def test_emptys():
     r = requests.get(get_latest_url)
@@ -147,7 +147,7 @@ def test_2_aggregation_in_time_window():
 
 def delete_all_request():
     r = requests.delete(events_url)
-    assert r.status_code == 200
+    assert r.status_code == 204
 
 
 def main():

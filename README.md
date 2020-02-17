@@ -12,12 +12,10 @@ Hi, thanks for taking a look at this project. Lets make this easy so you can get
 
     as an alternative
 
-    b. All tests should pass
-
 2. Run a quick integration test in a new shell to ensure everything is running: 
 `python ./simple_test.sh` 
 
-    a. Test should run through without any AssertionExceptions
+    a. Should exit without an assertion exception.
 
 
 ## API Documentation: Required Endpoints
@@ -37,13 +35,13 @@ Hi, thanks for taking a look at this project. Lets make this easy so you can get
 ## API Documetation: Debug endpoints
 1. /parameters [GET] Get all parameters and metadata WITHOUT latest
 2. /parameters/aggregated/ [GET] Pass a startDate and endDate parameter to get fine grained. startDate and endDate must be ISO formatted strings.
-3. /parameters/ [DELETE] Delete all events in database
+3. /events [DELETE] Delete all events in database
 
 ## Assumptions
 1. /parameters [POST] Boolean parameters are serialized to false if invalid. Valid booleans are true and false case-insensitive.
-2. /parameters [POST] Int:Quantity must be greater than 0 and real:% must be between 0 and 100.
+2. /parameters [POST] Int:Quantity must be greater than or equal to 0 and real:% must be between 0 and 100.
 3. /parameters [POST] If any of the parameters are invalid, we abort and return invalid request. Valid parameters match in name and value to an existing parameter.
-4. /parameters [POST] If same key is passed multiple times in parameters map, the last value is taken.
+4. /parameters [POST] If the same key is passed multiple times in the parameters map payload, the last value is taken.
 5. /parameters/latest will only return parameters that have an event registered. This is to avoid empty parameters. 
 
     - For all parameter metadata regardless of events, use /parameters[GET]
@@ -57,3 +55,5 @@ Hi, thanks for taking a look at this project. Lets make this easy so you can get
 3. /parameters/latest should return proper type of variable in json
 4. Json on POST is validated by function with validation rules. A more elegant solution must exist.
 5. JavaDocs: More documentation!
+6. Api versioning
+7. Standard/Documented Error Objects returned on failure
