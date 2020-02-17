@@ -1,62 +1,54 @@
 package org.plushy.factoryapi.models;
 
-import java.util.List;
+import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
-
-import javax.persistence.GenerationType;
 
 @Data
 @Entity
 @IdClass(ParameterEventId.class)
-public class Parameter {
-    // @EmbeddedId
-    // private ParameterEventId parameterId;
+public class Parameter implements Serializable {
+    // @Id
+    // @GeneratedValue(strategy=GenerationType.AUTO)
+    private long id;
+    @JsonProperty("key")
     @Id
-    private String key;
+    private String parameterKey;
     @Id
-    @Column(insertable=false, updatable=false)
     private String machineKey;
     private String name;
     private String type;
     private String unit;
 
-    @OneToMany
-    @OrderBy("dateTime")
-    List<ParameterEvent> events;
+    @ManyToOne
+    @JoinColumn(name = "fk_machine", referencedColumnName = "key")
+    private Machine machine;
 
-    public Parameter(){}
+    public Parameter() {
+    }
 
-    public Parameter(String key, String machineKey, String name, String type, String unit){
-        this.key = key;
+    public Parameter(final String key, final String machineKey, final String name, final String type,
+            final String unit) {
+        this.parameterKey = key;
         this.machineKey = machineKey;
         this.name = name;
         this.type = type;
         this.unit = unit;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
     public String getMachineKey() {
         return machineKey;
     }
 
-    public void setMachineKey(String machineKey) {
+    public void setMachineKey(final String machineKey) {
         this.machineKey = machineKey;
     }
 
@@ -64,7 +56,7 @@ public class Parameter {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -72,7 +64,7 @@ public class Parameter {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -80,15 +72,23 @@ public class Parameter {
         return unit;
     }
 
-    public void setUnit(String unit) {
+    public void setUnit(final String unit) {
         this.unit = unit;
     }
 
-    public List<ParameterEvent> getEvents() {
-        return events;
+    public Machine getMachine() {
+        return machine;
     }
 
-    public void setEvents(List<ParameterEvent> events) {
-        this.events = events;
+    public void setMachine(final Machine machine) {
+        this.machine = machine;
+    }
+
+    public String getParameterKey() {
+        return parameterKey;
+    }
+
+    public void setParameterKey(final String parameterKey) {
+        this.parameterKey = parameterKey;
     }
 }

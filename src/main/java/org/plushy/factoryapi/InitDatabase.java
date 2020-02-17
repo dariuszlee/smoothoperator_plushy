@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvParser;
 
 import java.io.File;
 
@@ -22,53 +21,53 @@ import com.fasterxml.jackson.databind.MappingIterator;
 @Configuration
 @Slf4j
 public class InitDatabase {
-	@Bean
-	CommandLineRunner preloadDatabase(MachineRepository machineRepository, ParameterRepository parameterRepository) {
-		return args -> {
-            loadDatabase(machineRepository, parameterRepository);
+    @Bean
+    CommandLineRunner preloadDatabase(final MachineRepository machineRepository,
+            final ParameterRepository parameterRepository) {
+        return args -> {
+            final String machineFileName = "machines.csv";
+            loadMachines(machineRepository, machineFileName);
+            final String parametersFileName = "parameters.csv";
+            loadParameters(parameterRepository, parametersFileName, machineRepository);
         };
     }
-    
-    public static void loadDatabase(MachineRepository machineRepository, ParameterRepository parameterRepository) {
-        String machineFileName = "machines.csv";
-        loadMachines(machineRepository, machineFileName);
-        String parametersFileName = "parameters.csv";
-        loadParameters(parameterRepository, parametersFileName);
-    }
 
-    public static void loadMachines(MachineRepository machineRepository, String fileName){
+    public static void loadMachines(final MachineRepository machineRepository, final String fileName) {
         try {
-            File machineDbFile = new ClassPathResource(fileName).getFile(); 
-            CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
-            CsvMapper mapper = new CsvMapper();
-            MappingIterator<Machine> readValues =
-                mapper.readerFor(Machine.class).with(bootstrapSchema).readValues(machineDbFile);
+            final File machineDbFile = new ClassPathResource(fileName).getFile();
+            final CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
+            final CsvMapper mapper = new CsvMapper();
+            final MappingIterator<Machine> readValues = mapper.readerFor(Machine.class).with(bootstrapSchema)
+                    .readValues(machineDbFile);
             // for( readValues )
-            while(readValues.hasNext()){
-                Machine machine = readValues.next();
+            while (readValues.hasNext()) {
+                final Machine machine = readValues.next();
                 log.info("Preloading: " + machineRepository.save(machine));
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             log.error("Error occurred while loading object list from file: " + fileName + e.toString());
         }
     };
 
-    public static void loadParameters(ParameterRepository parameterRepository, String fileName){
+    public static void loadParameters(final ParameterRepository parameterRepository, final String fileName,
+            final MachineRepository machineRepo) {
         try {
-            File parameterDbFile = new ClassPathResource(fileName).getFile(); 
-            CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
-            CsvMapper mapper = new CsvMapper();
+            final File parameterDbFile = new ClassPathResource(fileName).getFile();
+            final CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
+            final CsvMapper mapper = new CsvMapper();
             // mapper.enable(CsvParser.Feature.IGNORE_TRAILING_UNMAPPABLE);
 
-            MappingIterator<Parameter> readValues =
-                mapper.readerFor(Parameter.class).with(bootstrapSchema).readValues(parameterDbFile);
-            // for( readValues )
-            while(readValues.hasNext()){
-                Parameter parameter = readValues.next();
+            final MappingIterator<Parameter> readValues = mapper.readerFor(Parameter.class).with(bootstrapSchema)
+                    .readValues(parameterDbFile);
+            while (readValues.hasNext()) {
+                final Parameter parameter = readValues.next();
+                System.out.println(parameter);
+                final Machine machineForParam = machineRepo.getOne(parameter.getMachineKey());
+                parameter.setMachine(machineForParam);
                 System.out.println(parameter);
                 log.info("Preloading: " + parameterRepository.save(parameter));
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             log.error("Error occurred while loading object list from file: " + fileName + e.toString());
         }
     };

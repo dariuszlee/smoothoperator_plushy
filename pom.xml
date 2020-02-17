@@ -14,9 +14,9 @@
 	<name>factory-api</name>
 	<description>Demo project for Spring Boot</description>
 
-	<properties>
-		<java.version>13</java.version>
-	</properties>
+	<!-- <properties> -->
+	<!-- 	<java.version>13</java.version> -->
+	<!-- </properties> -->
 
 	<dependencies>
         <dependency>
@@ -70,7 +70,32 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+            <plugin>
+                <groupId>net.revelc.code.formatter</groupId>
+                <artifactId>formatter-maven-plugin</artifactId>
+                <version>2.11.0</version>
+                <configuration>
+                    <directories>
+                        <directory>${project.build.sourceDirectory}</directory>
+                    </directories>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
-
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.1</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>checkstyle</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
