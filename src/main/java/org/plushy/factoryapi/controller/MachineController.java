@@ -60,7 +60,7 @@ public final class MachineController {
         return machineService.getLatestForEachParameter();
     }
 
-    @DeleteMapping("/parameters")
+    @DeleteMapping("/parameters/events")
     @ResponseStatus(HttpStatus.OK)
     public void deleteAll() {
         logger.info("/parameters/[DELETE] request received.");

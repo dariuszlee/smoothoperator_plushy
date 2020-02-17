@@ -7,8 +7,8 @@ Hi, thanks for taking a look at this project. Lets make this easy so you can get
 
     a. If this doesn't work, for whatever reason, try
 
-        - `mvn -N io.takari:maven:0.7.7:wrapper`
-        - `./mvnw clean test spring-boot:run` as an alternative
+        mvn -N io.takari:maven:0.7.7:wrapper
+        ./mvnw clean test spring-boot:run as an alternative
 
     b. All tests should pass
 
@@ -23,7 +23,7 @@ Hi, thanks for taking a look at this project. Lets make this easy so you can get
 
     a. Payload is: {"machineCode": "filler", "parameter": {"param1": 1, "param2":...}}
 
-        - NOTE: The example payload in the documentation isn't valid json. Parameters are now wrapped as a json object instead of as an array.
+    NOTE: The example payload in the documentation isn't valid json. Parameters are now wrapped as a json object instead of as an array.
 
 2. /parameters/latest [GET] Get all parameters and metadata only if there is an event. If there are events, return the latest event.
 
