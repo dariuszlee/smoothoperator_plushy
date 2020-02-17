@@ -1,6 +1,6 @@
 # Welcome to Plushy Manufacturing API
 
-Hi, thanks for taking a look at this project. Lets make this easy so you can get back to your important stuff.
+Hi, thanks for taking a look at this project. 
 
 ## Quick Start
 1. `mvn clean test spring-boot:run`
